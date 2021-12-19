@@ -16,8 +16,8 @@ import {
 
 const App = () => {
     const dispatch = useDispatch();
-    const filteredContacts = useSelector(getFilter);
     const contacts = useSelector(getFilteredContacts);
+    const filteredContacts = useSelector(getFilter);
     const errorMessage = useSelector(getError);
     const isLoading = useSelector(getIsLoading);
 
