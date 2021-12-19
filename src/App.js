@@ -1,17 +1,32 @@
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import ContactForm from './components/ContactForm';
 import ContactList from './components/ContactList';
 import Filter from './components/Filter';
 import Section from './components/Section';
-import { deleteContact, filterContacts } from './redux/actions';
-import { getFilteredContacts, getFilter } from './redux/selectors';
+import TechInfo from './components/TechInfo';
+import { filterContacts } from './redux/actions';
+import { deleteContacts, fetchContacts } from './redux/operations';
+import {
+    getError,
+    getFilter,
+    getFilteredContacts,
+    getIsLoading,
+} from './redux/selectors';
 
 const App = () => {
+    const dispatch = useDispatch();
     const contacts = useSelector(getFilteredContacts);
     const filteredContacts = useSelector(getFilter);
-    const dispatch = useDispatch();
-    const onDeleteContact = id => dispatch(deleteContact(id));
+    const errorMessage = useSelector(getError);
+    const isLoading = useSelector(getIsLoading);
+
+    const onDeleteContact = id => dispatch(deleteContacts(id));
     const findName = event => dispatch(filterContacts(event.target.value));
+
+    useEffect(() => {
+        dispatch(fetchContacts());
+    }, [dispatch]);
 
     return (
         <div className="appDiv">
@@ -20,10 +35,14 @@ const App = () => {
             </Section>
             <Section title="Contacts">
                 <Filter onFilterChange={findName} value={filteredContacts} />
-                <ContactList
-                    contacts={contacts}
-                    onDeleteContact={onDeleteContact}
-                />
+                {errorMessage && <TechInfo message={errorMessage} />}
+                {isLoading && <TechInfo message={'Loading...'} />}
+                {contacts.length !== 0 && (
+                    <ContactList
+                        contacts={contacts}
+                        onDeleteContact={onDeleteContact}
+                    />
+                )}
             </Section>
         </div>
     );
