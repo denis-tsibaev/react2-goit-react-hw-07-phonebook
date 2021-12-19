@@ -3,14 +3,15 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { addContact } from '../../redux/actions';
+import { addContacts } from '../../redux/operations';
+import { getContacts } from '../../redux/selectors';
 import style from './ContactForm.module.css';
 
 const ContactForm = () => {
     const [name, setName] = useState('');
     const [number, setNumber] = useState('');
     const dispatch = useDispatch();
-    const contacts = useSelector(state => state.contacts.contacts);
+    const contacts = useSelector(getContacts);
 
     const handleInputChange = event => {
         const { name, value } = event.target;
@@ -29,7 +30,7 @@ const ContactForm = () => {
             return;
         }
 
-        dispatch(addContact(name, number));
+        dispatch(addContacts(name, number));
         setName('');
         setNumber('');
     };

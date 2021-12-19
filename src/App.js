@@ -4,7 +4,7 @@ import ContactForm from './components/ContactForm';
 import ContactList from './components/ContactList';
 import Filter from './components/Filter';
 import Section from './components/Section';
-import TechInfo from './components/TechInfo';
+import TechInfo from './components/TechInfo/';
 import { filterContacts } from './redux/actions';
 import { deleteContacts, fetchContacts } from './redux/operations';
 import {
@@ -16,8 +16,8 @@ import {
 
 const App = () => {
     const dispatch = useDispatch();
-    const contacts = useSelector(getFilteredContacts);
     const filteredContacts = useSelector(getFilter);
+    const contacts = useSelector(getFilteredContacts);
     const errorMessage = useSelector(getError);
     const isLoading = useSelector(getIsLoading);
 
@@ -35,14 +35,15 @@ const App = () => {
             </Section>
             <Section title="Contacts">
                 <Filter onFilterChange={findName} value={filteredContacts} />
-                {errorMessage && <TechInfo message={errorMessage} />}
-                {isLoading && <TechInfo message={'Loading...'} />}
-                {contacts.length !== 0 && (
-                    <ContactList
-                        contacts={contacts}
-                        onDeleteContact={onDeleteContact}
-                    />
+                {errorMessage && (
+                    <TechInfo message="Something wrong! Please, try again later." />
                 )}
+                {isLoading && <TechInfo message="Loading..." />}
+
+                <ContactList
+                    contacts={contacts}
+                    onDeleteContact={onDeleteContact}
+                />
             </Section>
         </div>
     );
