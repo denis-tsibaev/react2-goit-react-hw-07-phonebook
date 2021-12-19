@@ -4,6 +4,7 @@ axios.defaults.baseURL = 'https://61bdf4c12a1dd4001708a1af.mockapi.io';
 
 async function getContacts() {
     const response = await axios.get('/contacts');
+    console.log(response.data);
     return response.data;
 }
 
